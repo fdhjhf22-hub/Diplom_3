@@ -1,12 +1,10 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 from urls import BASE_PAGE_URL
 
 class MainPage(BasePage):
     def open(self):
-        self.driver.get(BASE_PAGE_URL)
+        self.open_url(BASE_PAGE_URL)
 
     def click_constructor(self):
         self.click_element(MainPageLocators.CONSTRUCTOR_BUTTON)
@@ -35,7 +33,7 @@ class MainPage(BasePage):
     def add_ingredient_to_basket(self):
         ingredient = self.find_element(MainPageLocators.INGREDIENT)
         basket = self.find_element(MainPageLocators.BASKET)
-        self.driver.execute_script("""
+        self.execute_script("""
             var src = arguments[0];
             var tgt = arguments[1];
             var dt = new DataTransfer();
@@ -46,9 +44,7 @@ class MainPage(BasePage):
         """, ingredient, basket)
 
     def wait_for_counter_increase(self, initial):
-        WebDriverWait(self.driver, 10).until(
-            lambda d: int(self.get_ingredient_counter()) > initial
-        )
+        self.wait.until(lambda d: int(self.get_ingredient_counter()) > initial)
 
     def close_cookie_banner(self):
         try:
@@ -56,3 +52,6 @@ class MainPage(BasePage):
             cookie_btn.click()
         except:
             pass
+
+    def wait_for_modal_invisibility(self):
+        self.wait_for_invisibility(MainPageLocators.MODAL_HEADER)

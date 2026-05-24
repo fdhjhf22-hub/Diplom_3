@@ -1,6 +1,5 @@
 import allure
 from pages.main_page import MainPage
-from locators.main_page_locators import MainPageLocators
 
 @allure.feature("Основная функциональность")
 class TestMainPage:
@@ -20,7 +19,7 @@ class TestMainPage:
             page.open()
         with allure.step("Кликаем на «Лента Заказов»"):
             page.click_orders_feed()
-        assert "feed" in page.driver.current_url
+        assert "feed" in page.get_current_url()
 
     @allure.title("Открытие модального окна ингредиента")
     def test_ingredient_modal_opens(self, driver):
@@ -43,11 +42,7 @@ class TestMainPage:
         with allure.step("Закрываем модальное окно"):
             page.close_modal()
         with allure.step("Ожидаем, что модальное окно невидимо"):
-            from selenium.webdriver.support.ui import WebDriverWait
-            from selenium.webdriver.support import expected_conditions as EC
-            WebDriverWait(driver, 10).until(
-                EC.invisibility_of_element_located(MainPageLocators.MODAL_HEADER)
-            )
+            page.wait_for_modal_invisibility()
 
     @allure.title("Увеличение счётчика ингредиента при добавлении")
     def test_counter_increments(self, driver):

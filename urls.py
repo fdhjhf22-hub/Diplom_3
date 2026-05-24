@@ -1,6 +1,6 @@
 BASE_PAGE_URL = "https://stellarburgers.education-services.ru/"
 ORDERS_FEED_URL = f"{BASE_PAGE_URL}feed"
-API_BASE_URL = "https://stellarburgers.education-services.ru/api"
+API_BASE_URL = f"{BASE_PAGE_URL}api"
 INGREDIENTS_ENDPOINT = f"{API_BASE_URL}/ingredients"
 ORDERS_ENDPOINT = f"{API_BASE_URL}/orders"
 AUTH_REGISTER_ENDPOINT = f"{API_BASE_URL}/auth/register"

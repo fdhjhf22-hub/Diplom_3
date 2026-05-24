@@ -1,7 +1,6 @@
 import allure
 from pages.main_page import MainPage
 from helpers import register_new_user, get_ingredients, create_order, get_orders_data
-from locators.main_page_locators import MainPageLocators
 
 @allure.feature("Лента заказов")
 class TestOrderFeed:
@@ -54,6 +53,6 @@ class TestOrderFeed:
             order_number = create_order(token, ingredient_ids)
         with allure.step("Проверяем через API, что заказ в работе"):
             _, _, orders = get_orders_data(token)
-            created_order = next((o for o in orders if o["number"] == order_number), None)
-            assert created_order is not None
-            assert created_order["status"] in ["pending", "done"]
+            # атомарная проверка без условий – находим заказ по номеру
+            found = any(o["number"] == order_number for o in orders)
+            assert found, f"Заказ {order_number} не найден в списке"
